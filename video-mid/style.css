@@ -1,0 +1,27 @@
+body {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    border-radius: 0 0 50px 50px;
+    padding-top: 5vh;
+    width: 700px;
+    height: 90vh;
+    background: linear-gradient(to bottom, #FD814A, #095896);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img{
+    border-radius: 50px;
+    margin: auto;
+    background-color: white;
+    width: 90%;
+    height: 90%;
+}
