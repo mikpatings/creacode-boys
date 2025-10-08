@@ -9,11 +9,6 @@ let settings = {
   fpsSmoothing: 0.05
 };
 
-let windowWidth = '100px';
-let windowHeight = '100px';
-let width = '100px';
-let height = '100px';
-
 let paused = false;
 let lastTime = 0;
 let fps = 60;
