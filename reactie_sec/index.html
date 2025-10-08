@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcard Comments</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    body {
+      background-color: #e9f2fa;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .input-container {
+      position: sticky;
+      bottom: 0;
+      background: white;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Smooth scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="flex justify-center items-center min-h-screen p-4">
+
+  <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
+    <!-- Scrollable content -->
+    <div class="overflow-y-auto flex-1 space-y-6 p-5" id="content-area">
+
+      <!-- Flashcard block -->
+      <div class="card border-b border-slate-100 pb-4">
+        <h2 class="text-lg font-semibold text-gray-900">Amino Acid Flashcards</h2>
+        <p class="text-sm text-gray-500 mt-1">100 flashcards · 50k imports</p>
+        <div class="flex items-center mt-3 space-x-2">
+          <img src="https://i.pravatar.cc/40?img=8" alt="avatar" class="w-7 h-7 rounded-full">
+          <span class="text-sm font-medium text-gray-600">Moritz Wallawitsch</span>
+        </div>
+      </div>
+
+      <div class="card border-b border-slate-100 pb-4">
+        <h2 class="text-lg font-semibold text-gray-900">Anatomie - Membre supérieur, Membre inférieur, Tête et tronc</h2>
+        <p class="text-sm text-gray-500 mt-1">100 flashcards · 50k imports</p>
+        <div class="flex items-center mt-3 space-x-2">
+          <img src="https://i.pravatar.cc/40?img=9" alt="avatar" class="w-7 h-7 rounded-full">
+          <span class="text-sm font-medium text-gray-600">Moritz Wallawitsch</span>
+        </div>
+      </div>
+
+      <div class="card border-b border-slate-100 pb-4">
+        <h2 class="text-lg font-semibold text-gray-900 leading-snug">一階醫師國考懶人解剖學/第一次專門職業及技術人員高等考試醫師考試分階段考試/趙俊彥解剖學</h2>
+        <p class="text-sm text-gray-500 mt-1">100 flashcards · 50k imports</p>
+        <div class="flex items-center mt-3 space-x-2">
+          <img src="https://i.pravatar.cc/40?img=10" alt="avatar" class="w-7 h-7 rounded-full">
+          <span class="text-sm font-medium text-gray-600">Moritz Wallawitsch</span>
+        </div>
+      </div>
+
+      <div class="card pb-4">
+        <h2 class="text-lg font-semibold text-gray-900">Amino Acid Flashcards</h2>
+        <p class="text-sm text-gray-500 mt-1">100 flashcards · 50k imports</p>
+        <div class="flex items-center mt-3 space-x-2">
+          <img src="https://i.pravatar.cc/40?img=11" alt="avatar" class="w-7 h-7 rounded-full">
+          <span class="text-sm font-medium text-gray-600">Moritz Wallawitsch</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Comment input -->
+    <div class="input-container flex items-center px-4 py-3 rounded-t-3xl">
+      <input
+        id="commentInput"
+        type="text"
+        placeholder="Comment"
+        class="flex-1 rounded-full border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+      />
+      <button
+        id="sendBtn"
+        class="ml-3 p-2 rounded-full hover:bg-gray-100 transition"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // GSAP entry animation
+    gsap.from(".card", {
+      y: 20,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: "power2.out"
+    });
+
+    // Comment submission (fake)
+    const input = document.getElementById('commentInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const content = document.getElementById('content-area');
+
+    sendBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (!text) return;
+      const comment = document.createElement('div');
+      comment.className = 'card border-b border-slate-100 pb-4 bg-slate-50 p-3 rounded-xl';
+      comment.innerHTML = `
+        <p class="text-sm text-gray-800">${text}</p>
+        <div class="flex items-center mt-3 space-x-2">
+          <img src="https://i.pravatar.cc/40?img=12" class="w-6 h-6 rounded-full">
+          <span class="text-xs font-medium text-gray-600">You</span>
+        </div>
+      `;
+      content.appendChild(comment);
+      input.value = '';
+      gsap.from(comment, { opacity: 0, y: 20, duration: 0.4, ease: "power2.out" });
+      content.scrollTop = content.scrollHeight;
+    });
+  </script>
+</body>
+</html>
