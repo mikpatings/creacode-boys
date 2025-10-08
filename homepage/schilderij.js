@@ -16,6 +16,8 @@ let palette;
 let t = 0; // global time
 let imgElement;
 let imgRect;
+let synth; // Tone.js synthesizer
+let isPlaying = false; // track if note is currently playing
 
 function setup(){
   // Get the img element and its dimensions/position
@@ -33,10 +35,23 @@ function setup(){
   colorMode(HSB, 360, 100, 100, 1);
   pixelDensity(max(1, floor(displayDensity())));
 
+  // Initialize Tone.js synthesizer
+  synth = new Tone.Synth({
+    oscillator: {
+      type: "sine"
+    },
+    envelope: {
+      attack: 0.1,
+      decay: 0.2,
+      sustain: 0.5,
+      release: 0.8
+    }
+  }).toDestination();
+
   // offscreen layer for trails
   pgTrails = createGraphics(width, height);
   pgTrails.pixelDensity(1);
-  pgTrails.colorMode(HSB,360,100,100,1);
+  pgTrails.colorMode(HSB,300,200,100,1);
 
   // create flow field
   flow = new FlowField(settings.fieldRes);
@@ -253,6 +268,32 @@ function clearTrails(){
 
 function togglePause(){
   paused = !paused;
+}
+
+function mousePressed(){
+  // Only play if mouse is within canvas bounds
+  if(mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height){
+    if(!isPlaying){
+      // Ensure audio context is started (required by browsers)
+      if(Tone.context.state !== 'running'){
+        Tone.start();
+      }
+      
+      // Map mouse position to frequency (C4 to C6 range)
+      let frequency = map(mouseX, 0, width, 261.63, 1046.50); // C4 to C6
+      let note = Tone.Frequency(frequency).toNote();
+      
+      synth.triggerAttack(note);
+      isPlaying = true;
+    }
+  }
+}
+
+function mouseReleased(){
+  if(isPlaying){
+    synth.triggerRelease();
+    isPlaying = false;
+  }
 }
 
 function keyPressed(){
