@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "tone": "^15.3.5"
+  }
+}
